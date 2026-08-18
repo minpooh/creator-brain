@@ -1,123 +1,206 @@
 # MVP Definition
 
+## Goal
+
+Creator Brain의 MVP는 사용자가 자신의 콘텐츠 또는
+자신의 관심사와 경험을 바탕으로 Creator Identity를 발견하고,
+앞으로의 콘텐츠 방향과 아이디어를 기획할 수 있도록 돕는 것을 목표로 합니다.
+
+콘텐츠가 이미 있는 사용자와
+아직 콘텐츠가 없는 사용자 모두 서비스를 시작할 수 있도록 합니다.
+
 ## Target User
 
-SNS를 꾸준히 운영하고 있지만
-자신의 콘텐츠 방향성과 강점을 명확하게 정의하기 어려운
-1인 크리에이터를 대상으로 합니다.
+### 1. Existing Creator
 
-특히 다음과 같은 고민을 가진 사용자를 주요 대상으로 합니다.
+이미 콘텐츠를 제작하고 있으며,
+자신의 콘텐츠 강점과 방향성을 파악하고 싶은 1인 크리에이터.
 
-- 내가 어떤 콘텐츠를 잘하는지 모르겠다.
-- 어떤 콘텐츠를 계속 만들어야 할지 모르겠다.
-- 조회수가 높은 콘텐츠와 내가 만들고 싶은 콘텐츠 사이에서 고민된다.
-- 기존 콘텐츠를 어떻게 발전시켜야 할지 모르겠다.
+### 2. Aspiring Creator
 
-## User Input
+아직 콘텐츠가 많지 않거나 제작을 시작하지 않았지만,
+자신에게 맞는 콘텐츠 주제와 방향을 찾고 싶은 사용자.
 
-사용자는 기존에 제작한 콘텐츠를 등록합니다.
+## Core User Flow
 
-- Instagram 콘텐츠 URL
-- 이미지
-- 콘텐츠 제목
-- 콘텐츠 설명
-- 기본 성과 데이터
+### Existing Creator
 
-## Core Features
+콘텐츠 등록
+↓
+Content List
+↓
+AI Analysis
+↓
+Creator Identity
+↓
+Content Direction
+↓
+Content Ideas
+↓
+Content Planning
 
-### 1. Dashboard
+### Aspiring Creator
 
-사용자의 콘텐츠 분석 상태와
-Creator Identity, Content Pillar, 추천 콘텐츠 아이디어 등을
-한눈에 확인할 수 있는 메인 화면입니다.
+Starter Questions
+↓
+Creator Identity
+↓
+Content Direction
+↓
+Content Ideas
+↓
+Content Planning
 
-아직 콘텐츠 분석을 완료하지 않은 사용자는
-콘텐츠 등록 및 분석을 시작할 수 있습니다.
 
-### 2. Content Registration
+## MVP Features
 
-사용자가 기존 콘텐츠를 등록하고 관리할 수 있습니다.
+### 1. Authentication
 
-- 콘텐츠 URL
-- 이미지
-- 콘텐츠 제목
-- 콘텐츠 설명
-- 기본 성과 데이터
+사용자의 데이터를 저장하고 관리하기 위한
+로그인 및 회원가입 기능을 제공합니다.
 
-### 3. AI Content Analysis
+- Google OAuth
 
-등록된 콘텐츠를 AI가 분석하여
-콘텐츠의 주제, 유형, 특징 및 반복되는 패턴을 파악합니다.
+---
 
-### 4. Creator Identity
+### 2. Creator Onboarding
 
-기존 콘텐츠 분석 결과를 바탕으로
-사용자의 콘텐츠 정체성을 정의합니다.
+사용자의 현재 콘텐츠 제작 상태에 따라
+적절한 시작 경로를 제공합니다.
 
-### 5. Strength & Content Pattern
+#### Existing Creator
 
-사용자의 콘텐츠에서 반복적으로 나타나는
-강점과 패턴을 분석합니다.
+기존 콘텐츠를 등록하여
+AI 분석을 시작할 수 있습니다.
 
-### 6. Content Direction
+#### Aspiring Creator
 
-Creator Identity와 콘텐츠 분석 결과를 바탕으로
-앞으로 발전시키면 좋을 콘텐츠 방향과 Content Pillar를 제안합니다.
+콘텐츠가 없는 사용자는
+간단한 질문에 답하여 자신의 관심사,
+경험, 강점 등을 입력할 수 있습니다.
 
-### 7. Content Idea Recommendation
+---
 
-도출된 콘텐츠 방향성을 바탕으로
-사용자에게 적합한 다음 콘텐츠 아이디어를 추천합니다.
+### 3. Content Registration
 
-터
+기존 콘텐츠를 Creator Brain에 등록합니다.
 
-### 8. Idea to Content Plan
+- Content URL
+- Image
+- Title
+- Description
+- Views
+- Likes
 
-사용자가 선택한 콘텐츠 아이디어를
-구체적인 콘텐츠 기획으로 발전시킬 수 있습니다.
+MVP에서는 사용자가 직접 콘텐츠 정보를 입력합니다.
 
-## User Output
+---
 
-사용자는 다음과 같은 결과를 확인할 수 있습니다.
+### 4. Content List
+
+등록된 콘텐츠를 확인하고 관리합니다.
+
+- 콘텐츠 목록
+- 콘텐츠 기본 정보
+- 성과 데이터
+- 분석 상태
+- 콘텐츠 추가
+
+---
+
+### 5. AI Content Analysis
+
+등록된 콘텐츠를 AI가 분석합니다.
+
+분석 항목:
+
+- Content Topic
+- Content Type
+- Content Characteristics
+- Content Pattern
+- Content Strength
+
+---
+
+### 6. Creator Identity
+
+AI 분석 또는 Starter Questions를 기반으로
+사용자의 Creator Identity를 생성합니다.
+
+예:
 
 - Creator Identity
-- Content Pillar
-- Content Strength
-- Content Pattern
-- Content Direction
-- Recommended Content Ideas
-- Content Plan
+- Content Pillars
+- Strengths
+- Content Patterns
+
+---
+
+### 7. Content Direction
+
+Creator Identity와 콘텐츠 강점을 기반으로
+앞으로 발전시키면 좋을 콘텐츠 방향을 제안합니다.
+
+---
+
+### 8. Content Ideas
+
+Content Direction을 기반으로
+다음 콘텐츠 아이디어를 추천합니다.
+
+사용자는 추천된 아이디어를 선택하고 저장할 수 있습니다.
+
+---
+
+### 9. Content Planning
+
+선택한 콘텐츠 아이디어를
+실제 제작 가능한 기획으로 발전시킵니다.
+
+- Title
+- Hook
+- Key Message
+- Story Flow
+- Shot Ideas
+
+완성된 기획을 저장할 수 있습니다.
 
 
+## MVP Out of Scope
 
-## Out of Scope
+MVP에서는 다음 기능을 구현하지 않습니다.
 
-MVP에서는 다음 기능을 제외합니다.
-
-- Instagram API 연동
-- 자동 업로드
-- 예약 발행
-- 콘텐츠 캘린더
-- 영상 자체 분석
-- AI 영상 편집
-- 경쟁자 분석
-- 해시태그 추천
-- 썸네일 생성
-- 상세 성과 분석
-
+- Instagram API 자동 콘텐츠 수집
+- Instagram 자동 게시
+- TikTok / YouTube 연동
+- 경쟁자 자동 분석
+- 실시간 SNS 성과 수집
+- 고급 콘텐츠 성과 분석
+- AI 영상 자동 생성
+- AI 이미지 생성
+- 팀 협업 기능
+- 유료 결제
+- 모바일 네이티브 앱
 
 
-## Success Criteria
+## MVP Success Criteria
 
-사용자가 기존 콘텐츠를 등록한 후,
+사용자가 Creator Brain을 통해
+"무엇을 만들어야 할지 모르겠다"
+라는 상태에서
 
-1. 자신의 Creator Identity를 확인할 수 있다.
-2. 자신의 콘텐츠 강점과 패턴을 이해할 수 있다.
-3. 앞으로의 콘텐츠 방향성을 확인할 수 있다.
-4. 추천받은 콘텐츠 아이디어 중 하나를 선택할 수 있다.
-5. 선택한 아이디어를 구체적인 콘텐츠 기획으로 발전시킬 수 있다.
+"나는 이런 콘텐츠를 만들 수 있고,
+앞으로 이런 방향으로 발전하면 좋겠다."
+라는 상태로 이동할 수 있어야 합니다.
 
-이를 통해 사용자가
-"무엇을 만들어야 할지 모르겠다"는 상태에서
-"이 방향으로 이런 콘텐츠를 만들어보자"는 상태로
-전환되는 것을 목표로 합니다.
+### Existing Creator
+
+기존 콘텐츠를 등록하고
+AI 분석을 통해 자신의 Creator Identity를 확인한 후
+다음 콘텐츠를 기획할 수 있어야 합니다.
+
+### Aspiring Creator
+
+자신의 관심사와 경험을 입력하고
+초기 Creator Identity와 Content Direction을 확인한 후
+첫 콘텐츠를 기획할 수 있어야 합니다.
