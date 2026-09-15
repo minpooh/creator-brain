@@ -1,6 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import SectionIndex from "./SectionIndex";
 import ContentImageGrid from "./ContentImageGrid";
 import AnalysisResultCard from "./AnalysisResultCard";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 const contentImages = [
   { src: "/images/analysis/content-1.png", alt: "식물 콘텐츠" },
@@ -44,6 +49,7 @@ const mobileKeywords = [
 function FlowArrow({ className = "" }: { className?: string }) {
   return (
     <svg
+      data-analysis-arrow
       className={`size-6 shrink-0 text-primary ${className}`}
       viewBox="0 0 24 24"
       fill="none"
@@ -61,8 +67,85 @@ function FlowArrow({ className = "" }: { className?: string }) {
 }
 
 export default function Analysis() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, y, q, root }) => {
+    const tl = fadeUpSection(gsap, root, { y, reduced });
+    const preview = q("[data-analysis-preview]");
+    const arrow = q("[data-analysis-arrow]");
+    const result = q("[data-analysis-result]");
+    const bars = q("[data-progress-bar]");
+    const suggestions = q("[data-analysis-suggestion]");
+    const sequence = [...preview, ...arrow, ...result];
+
+    if (reduced) {
+      gsap.set(sequence, { opacity: 1, y: 0 });
+      gsap.set(suggestions, { opacity: 1, y: 0 });
+      return;
+    }
+
+    gsap.set(sequence, { opacity: 0, y: 16 });
+    gsap.set(suggestions, { opacity: 0, y: 8 });
+
+    tl.to(preview, { opacity: 1, y: 0, duration: 0.55 }, "-=0.35");
+
+    if (arrow.length) {
+      tl.to(arrow, { opacity: 1, y: 0, duration: 0.4 }, "+=0.08");
+    }
+
+    tl.to(result, { opacity: 1, y: 0, duration: 0.55 }, "+=0.08");
+
+    if (bars.length) {
+      gsap.set(bars, { scaleX: 0 });
+      tl.addLabel("bars", "<0.18");
+
+      bars.forEach((bar, i) => {
+        const percent = Number(bar.dataset.percent ?? 0);
+        const valueEl = bar
+          .closest("[data-progress]")
+          ?.querySelector<HTMLElement>("[data-progress-value]");
+        const at = `bars+=${i * 0.14}`;
+
+        tl.fromTo(
+          bar,
+          { scaleX: 0 },
+          { scaleX: percent / 100, duration: 1.1, ease: "power2.out" },
+          at,
+        );
+
+        if (!valueEl) return;
+
+        const counter = { val: 0 };
+        tl.to(
+          counter,
+          {
+            val: percent,
+            duration: 1.1,
+            ease: "power2.out",
+            onUpdate: () => {
+              valueEl.textContent = `${Math.round(counter.val)}%`;
+            },
+          },
+          at,
+        );
+      });
+    }
+
+    if (!suggestions.length) return;
+
+    tl.to(
+      suggestions,
+      { opacity: 1, y: 0, duration: 0.4, stagger: 0.16 },
+      "+=0.12",
+    );
+  });
+
   return (
-    <section className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="03" label="ANALYSIS" />
@@ -83,7 +166,7 @@ export default function Analysis() {
 
       {/* Desktop layout */}
       <div className="hidden items-center gap-10 lg:flex">
-        <div className="flex-1 rounded-3xl bg-white p-3">
+        <div data-analysis-preview className="flex-1 rounded-3xl bg-white p-3">
           <ContentImageGrid images={contentImages} columns={3} />
         </div>
 
@@ -94,7 +177,9 @@ export default function Analysis() {
 
       {/* Tablet layout */}
       <div className="hidden flex-col gap-4 md:flex lg:hidden">
-        <ContentImageGrid images={contentImages.slice(0, 3)} columns={3} />
+        <div data-analysis-preview>
+          <ContentImageGrid images={contentImages.slice(0, 3)} columns={3} />
+        </div>
         <AnalysisResultCard
           title="AI 분석 결과 요약"
           topics={topics}
@@ -104,8 +189,13 @@ export default function Analysis() {
 
       {/* Mobile layout */}
       <div className="flex flex-col gap-4 md:hidden">
-        <ContentImageGrid images={contentImages.slice(0, 2)} columns={2} />
-        <div className="rounded-3xl bg-white p-4 shadow-[0_8px_12px_rgba(15,23,42,0.04)]">
+        <div data-analysis-preview>
+          <ContentImageGrid images={contentImages.slice(0, 2)} columns={2} />
+        </div>
+        <div
+          data-analysis-result
+          className="rounded-3xl bg-white p-4 shadow-[0_8px_12px_rgba(15,23,42,0.04)]"
+        >
           <p className="mb-4 text-sm font-extrabold text-text-primary">
             핵심 분석 키워드
           </p>

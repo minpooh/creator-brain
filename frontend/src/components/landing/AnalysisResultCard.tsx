@@ -21,7 +21,10 @@ export default function AnalysisResultCard({
   showSuggestions = true,
 }: AnalysisResultCardProps) {
   return (
-    <div className="flex w-full flex-col gap-6 rounded-3xl bg-white p-6 shadow-[0_8px_12px_rgba(15,23,42,0.04)] md:p-8 lg:max-w-[500px]">
+    <div
+      data-analysis-result
+      className="flex w-full flex-col gap-6 rounded-3xl bg-white p-6 shadow-[0_8px_12px_rgba(15,23,42,0.04)] md:p-8 lg:max-w-[500px]"
+    >
       <p className="text-lg font-extrabold text-text-primary">{title}</p>
 
       <div className="flex flex-col gap-4">
@@ -48,7 +51,11 @@ export default function AnalysisResultCard({
               콘텐츠 패턴 제안
             </p>
             {suggestions.map((suggestion) => (
-              <div key={suggestion} className="flex items-center gap-2">
+              <div
+                key={suggestion}
+                data-analysis-suggestion
+                className="flex items-center gap-2"
+              >
                 <div className="flex size-4 shrink-0 items-center justify-center rounded bg-success-bg">
                   <Image
                     src="/icons/check.svg"

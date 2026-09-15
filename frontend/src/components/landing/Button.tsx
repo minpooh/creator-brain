@@ -10,7 +10,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-bold transition-colors cursor-pointer";
+    "inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-bold transition-[color,background-color,border-color,transform] duration-300 ease-out cursor-pointer";
 
   const variants = {
     primary: "bg-text-primary text-white hover:bg-gray-800",

@@ -1,10 +1,40 @@
+"use client";
+
+import { useRef } from "react";
 import Badge from "./Badge";
 import Button from "./Button";
 import DashboardPreview from "./DashboardPreview";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, isDesktop, y, q, root }) => {
+    const tl = fadeUpSection(gsap, root, {
+      y,
+      reduced,
+      withScrollTrigger: false,
+    });
+
+    const dashboard = q('[data-hero="dashboard"]');
+    if (!reduced && isDesktop && dashboard[0]) {
+      tl.to(dashboard[0], {
+        y: -6,
+        duration: 2.8,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+    }
+  });
+
   return (
-    <section className="flex w-full flex-col items-center gap-12 bg-surface px-5 py-16 md:px-20 md:py-20">
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col items-center gap-12 bg-surface px-5 py-16 md:px-20 md:py-20"
+    >
       {/* Text Block */}
       <div className="flex flex-col items-center gap-6">
         <Badge>AI 기반 1인 크리에이터 콘텐츠 분석 솔루션</Badge>

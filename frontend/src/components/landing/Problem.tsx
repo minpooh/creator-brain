@@ -1,6 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import SectionIndex from "./SectionIndex";
 import WorkflowStep from "./WorkflowStep";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 const workflowSteps = [
   {
@@ -53,9 +58,94 @@ const workflowSteps = [
   },
 ] as const;
 
-export default function Problem() {
+function WorkflowConnector() {
   return (
-    <section className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <svg
+      data-connector
+      className="pointer-events-none absolute top-1/2 right-0 hidden size-4 -translate-y-1/2 translate-x-1/2 lg:block"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 3.5L10.5 8L6 12.5"
+        stroke="#94a3b8"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={0}
+      />
+    </svg>
+  );
+}
+
+export default function Problem() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, isMobile, y, q, root }) => {
+    const tl = fadeUpSection(gsap, root, { y, reduced });
+    const row = q("[data-workflow-row]");
+    const steps = q("[data-workflow-step]");
+    const caption = q("[data-workflow-caption]");
+
+    if (reduced) {
+      gsap.set(row, { opacity: 1, x: 0 });
+      gsap.set(steps, { opacity: 1, x: 0, y: 0 });
+      gsap.set(caption, { opacity: 1, y: 0 });
+      return;
+    }
+
+    gsap.set(caption, { opacity: 0, y: 12 });
+
+    if (isMobile) {
+      gsap.set(steps, { opacity: 0, y: 16 });
+      tl.to(
+        steps,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.32,
+          ease: "power2.out",
+        },
+        "-=0.4",
+      );
+    } else {
+      gsap.set(row, { opacity: 0, x: -64 });
+      tl.to(
+        row,
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.9,
+          ease: "power2.out",
+        },
+        "-=0.4",
+      );
+    }
+
+    if (caption.length) {
+      tl.to(
+        caption,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: "power2.out",
+        },
+        "+=0.08",
+      );
+    }
+  });
+
+  return (
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="02" label="PROBLEM" />
@@ -78,13 +168,15 @@ export default function Problem() {
 
       {/* Desktop / Tablet workflow */}
       <div className="hidden flex-col gap-6 md:flex">
-        <div className="flex items-center justify-between">
+        <div
+          data-workflow-row
+          className="flex items-center justify-between"
+        >
           {workflowSteps.map((step, index) => (
             <div
               key={step.title}
-              className={`relative flex flex-1 justify-center ${
-                index < workflowSteps.length - 1 ? "workflow-step-arrow" : ""
-              }`}
+              data-workflow-step
+              className="relative flex flex-1 justify-center"
             >
               <WorkflowStep
                 iconSrc={step.iconSrc}
@@ -92,12 +184,16 @@ export default function Problem() {
                 title={step.title}
                 subtitle={step.subtitle}
               />
+              {index < workflowSteps.length - 1 ? <WorkflowConnector /> : null}
             </div>
           ))}
         </div>
 
         <div className="hidden justify-center pt-3 lg:flex">
-          <span className="rounded-lg bg-primary-bg px-4 py-2 text-[13px] font-bold text-primary">
+          <span
+            data-workflow-caption
+            className="rounded-lg bg-primary-bg px-4 py-2 text-[13px] font-bold text-primary"
+          >
             흩어진 여정, 반복되는 고민 →
           </span>
         </div>
@@ -109,6 +205,7 @@ export default function Problem() {
           <div
             key={step.mobileTitle}
             className="flex items-center gap-4 rounded-2xl bg-surface px-4 py-4"
+            data-workflow-step
           >
             <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-xs font-extrabold text-primary">
               {index + 1}

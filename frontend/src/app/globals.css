@@ -48,35 +48,59 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Workflow step arrows — centered between cards on desktop */
-@media (min-width: 1024px) {
-  .workflow-step-arrow::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 16px;
-    height: 16px;
-    transform: translate(50%, -50%);
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M6 3.5L10.5 8L6 12.5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+.landing-header {
+  transition:
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    backdrop-filter 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease;
+}
+
+.landing-header.is-scrolled {
+  background-color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.idea-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.planning-step {
+  transition: box-shadow 0.4s ease;
+}
+
+.planning-step.is-current {
+  box-shadow: 0 8px 24px rgba(95, 50, 236, 0.08);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-section-anim] {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .idea-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-header {
+    transition: none;
   }
 
-  .direction-step-arrow::after {
-    content: "";
-    position: absolute;
-    top: 28px;
-    right: 0;
-    width: 16px;
-    height: 16px;
-    transform: translateX(50%);
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M6 3.5L10.5 8L6 12.5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  .idea-card,
+  .planning-step {
+    transition: none;
+  }
+
+  [data-connector] path {
+    stroke-dashoffset: 0;
   }
 }

@@ -15,7 +15,7 @@ export default function PlanningStepCard({
     size === "sm" ? "size-8 text-[13px] rounded-lg" : "size-10 text-base rounded-lg";
 
   return (
-    <div className="flex w-full gap-4 rounded-2xl bg-white p-5 md:gap-5 md:p-6">
+    <div className="planning-step flex w-full gap-4 rounded-2xl bg-white p-5 md:gap-5 md:p-6">
       <div
         className={`flex shrink-0 items-center justify-center bg-primary-bg font-extrabold text-primary ${badgeSize}`}
       >

@@ -20,7 +20,10 @@ const stats = [
 
 export default function DashboardPreview() {
   return (
-    <div className="w-full max-w-[1000px] rounded-3xl border border-border bg-white p-6 shadow-[0_16px_16px_rgba(15,23,42,0.05)] md:p-8">
+    <div
+      data-hero="dashboard"
+      className="w-full max-w-[1000px] rounded-3xl border border-border bg-white p-6 shadow-[0_16px_16px_rgba(15,23,42,0.05)] md:p-8"
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

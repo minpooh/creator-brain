@@ -1,7 +1,12 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import SectionIndex from "./SectionIndex";
 import DirectionStep from "./DirectionStep";
 import CheckListItem from "./CheckListItem";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 const directionSteps = [
   {
@@ -45,9 +50,42 @@ const mobileTopics = [
   "실용적인 팁 중심 전달",
 ] as const;
 
-export default function Direction() {
+function DirectionConnector() {
   return (
-    <section className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <svg
+      data-connector
+      className="pointer-events-none absolute top-7 right-0 hidden size-4 translate-x-1/2 lg:block"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 3.5L10.5 8L6 12.5"
+        stroke="#94a3b8"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={0}
+      />
+    </svg>
+  );
+}
+
+export default function Direction() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, y, root }) => {
+    fadeUpSection(gsap, root, { y, reduced });
+  });
+
+  return (
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="05" label="DIRECTION" />
@@ -72,19 +110,20 @@ export default function Direction() {
           <p className="text-lg font-extrabold text-text-primary">
             추천 콘텐츠 방향성
           </p>
-          <div className="flex items-start justify-between">
+          <div className="relative flex items-start justify-between">
             {directionSteps.map((step, index) => (
               <div
                 key={step.label}
-                className={`relative flex flex-1 justify-center ${
-                  index < directionSteps.length - 1 ? "direction-step-arrow" : ""
-                }`}
+                className="relative flex flex-1 justify-center"
               >
                 <DirectionStep
                   iconSrc={step.iconSrc}
                   iconAlt={step.iconAlt}
                   label={step.label}
                 />
+                {index < directionSteps.length - 1 ? (
+                  <DirectionConnector />
+                ) : null}
               </div>
             ))}
           </div>

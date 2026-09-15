@@ -20,7 +20,7 @@ export default function IdeaCard({
 }: IdeaCardProps) {
   if (variant === "compact") {
     return (
-      <div className="rounded-2xl bg-surface p-4">
+      <div className="idea-card rounded-2xl bg-surface p-4">
         <p className="mb-2 text-sm font-semibold text-text-secondary">
           추천 아이디어 {index}
         </p>
@@ -31,7 +31,7 @@ export default function IdeaCard({
 
   if (variant === "row") {
     return (
-      <div className="flex items-center gap-4 rounded-2xl bg-surface px-5 py-5">
+      <div className="idea-card flex items-center gap-4 rounded-2xl bg-surface px-5 py-5">
         <Badge>{category}</Badge>
         <p className="min-w-0 flex-1 truncate text-[15px] font-extrabold text-text-primary">
           {title}
@@ -55,7 +55,7 @@ export default function IdeaCard({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-5 rounded-3xl bg-surface p-8 shadow-[0_4px_6px_rgba(15,23,42,0.02)]">
+    <div className="idea-card flex flex-1 flex-col gap-5 rounded-3xl bg-surface p-8 shadow-[0_4px_6px_rgba(15,23,42,0.02)]">
       <Badge>{category}</Badge>
       <p className="text-xl font-extrabold leading-7 text-text-primary">
         {title}

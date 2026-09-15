@@ -1,6 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import SectionIndex from "./SectionIndex";
 import IdentityCard from "./IdentityCard";
 import StrengthsCard from "./StrengthsCard";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 const identity = {
   title: "Sensory Lifestyle Creator",
@@ -20,8 +25,18 @@ const desktopStrengths = [
 const tabletStrengths = desktopStrengths.slice(0, 3);
 
 export default function Identity() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, y, root }) => {
+    fadeUpSection(gsap, root, { y, reduced });
+  });
+
   return (
-    <section className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="04" label="IDENTITY" />
@@ -29,7 +44,7 @@ export default function Identity() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <h2 className="max-w-[600px] text-[28px] font-extrabold leading-tight tracking-tight text-text-primary md:text-4xl md:leading-[48px]">
             당신은 이런{" "}
-            <span className="text-primary">크리에이터예요</span>
+            <span className="text-primary">크리에이터에요</span>
           </h2>
 
           <p className="hidden max-w-[480px] text-sm leading-6 text-text-secondary md:block md:text-[15px]">

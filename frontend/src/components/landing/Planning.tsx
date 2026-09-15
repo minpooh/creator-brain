@@ -1,6 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import SectionIndex from "./SectionIndex";
 import PlanningStepCard from "./PlanningStepCard";
 import StoryPreviewCard from "./StoryPreviewCard";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection, ScrollTrigger } from "@/lib/animations";
 
 const desktopSteps = [
   {
@@ -59,8 +64,35 @@ const storySegments = [
 ] as const;
 
 export default function Planning() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, y, q, root }) => {
+    fadeUpSection(gsap, root, { y, reduced });
+
+    const steps = q(".planning-step");
+    if (steps[0]) steps[0].classList.add("is-current");
+
+    if (reduced) return;
+
+    steps.forEach((step) => {
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          steps.forEach((item) => item.classList.remove("is-current"));
+          step.classList.add("is-current");
+        },
+      });
+    });
+  });
+
   return (
-    <section className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-surface px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="07" label="PLANNING" />

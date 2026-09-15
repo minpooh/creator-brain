@@ -1,15 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const navItems = ["서비스 소개", "분석 데모", "성장 여정", "요금제"];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const onScroll = () => {
+      header.classList.toggle("is-scrolled", window.scrollY > 8);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 flex h-20 items-center justify-between border-b border-border bg-white px-5 md:px-10 lg:px-20">
+    <header
+      ref={headerRef}
+      className="landing-header sticky top-0 z-50 flex h-20 items-center justify-between border-b border-border bg-white px-5 md:px-10 lg:px-20"
+    >
       {/* Brand */}
       <div className="flex items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-lg bg-primary">

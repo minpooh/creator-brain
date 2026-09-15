@@ -1,5 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import SectionIndex from "./SectionIndex";
 import IdeaCard from "./IdeaCard";
+import { useLandingAnimation } from "@/hooks/useLandingAnimation";
+import { fadeUpSection } from "@/lib/animations";
 
 const ideas = [
   {
@@ -26,8 +31,18 @@ const ideas = [
 ] as const;
 
 export default function Ideas() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLandingAnimation(sectionRef, ({ gsap, reduced, y, root }) => {
+    fadeUpSection(gsap, root, { y, reduced });
+  });
+
   return (
-    <section className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]">
+    <section
+      ref={sectionRef}
+      data-section-anim
+      className="flex w-full flex-col gap-10 bg-white px-5 py-14 md:gap-12 md:px-10 md:py-20 lg:gap-14 lg:px-20 lg:py-[100px]"
+    >
       {/* Title */}
       <div className="flex flex-col gap-4">
         <SectionIndex number="06" label="IDEAS" />
