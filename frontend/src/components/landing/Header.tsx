@@ -58,13 +58,13 @@ export default function Header() {
       {/* Desktop CTAs */}
       <div className="hidden items-center gap-3 md:flex">
         <a
-          href="#"
+          href="/login"
           className="text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary"
         >
           로그인
         </a>
         <a
-          href="#"
+          href="/login"
           className="inline-flex items-center justify-center rounded-lg bg-text-primary px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-gray-800"
         >
           무료로 시작하기
