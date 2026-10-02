@@ -74,7 +74,7 @@ export default function Header() {
       {/* Mobile Hamburger */}
       <button
         type="button"
-        className="flex size-10 items-center justify-center md:hidden"
+        className="flex size-10 cursor-pointer items-center justify-center md:hidden"
         onClick={() => setMobileOpen(!mobileOpen)}
         aria-label="메뉴 열기"
       >
