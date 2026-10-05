@@ -4,20 +4,12 @@ import {
   ContentRegistrationTrigger,
   type ContentRegistrationValues,
 } from "@/components/dashboard/ContentRegistrationModal";
+import { getContentThumbnailUrl } from "@/lib/dashboard/thumbnail";
 
 const platformLabels: Record<ContentRegistrationValues["platform"], string> = {
   YouTube: "유튜브 비디오",
   Instagram: "인스타그램 피드",
   Blog: "블로그",
-};
-
-const typeThumbnails: Record<
-  ContentRegistrationValues["contentType"],
-  string
-> = {
-  영상: "/images/dashboard/content-1.jpg",
-  이미지: "/images/dashboard/content-2.jpg",
-  아티클: "/images/dashboard/content-3.jpg",
 };
 
 function StarIcon() {
@@ -45,7 +37,7 @@ function todayLabel() {
 interface DashboardCollectingProps {
   contents: ContentRegistrationValues[];
   readyCount: number;
-  onRegister: (values: ContentRegistrationValues) => void;
+  onRegister: (values: ContentRegistrationValues) => Promise<void>;
 }
 
 export default function DashboardCollecting({
@@ -132,7 +124,7 @@ export default function DashboardCollecting({
           {contents.map((content, index) => (
             <ContentCard
               key={`${content.url}-${index}`}
-              thumbnail={typeThumbnails[content.contentType]}
+              thumbnail={getContentThumbnailUrl(content.url)}
               type={platformLabels[content.platform]}
               date={todayLabel()}
               title={content.title}

@@ -29,6 +29,7 @@ const emptySteps = [
   },
 ];
 
+
 function StarIcon() {
   return (
     <svg
@@ -46,7 +47,7 @@ function StarIcon() {
 export default function DashboardEmpty({
   onRegister,
 }: {
-  onRegister: (values: ContentRegistrationValues) => void;
+  onRegister: (values: ContentRegistrationValues) => Promise<void>;
 }) {
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-4 py-6 md:gap-8 md:px-10 md:py-12 lg:gap-10 lg:px-20 lg:py-[60px]">

@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 const platforms = ["YouTube", "Instagram", "Blog"] as const;
 const contentTypes = ["영상", "이미지", "아티클"] as const;
 
+
 export type ContentPlatform = (typeof platforms)[number];
 export type ContentMediaType = (typeof contentTypes)[number];
 
@@ -20,13 +21,13 @@ export interface ContentRegistrationValues {
 interface ContentRegistrationModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit?: (values: ContentRegistrationValues) => void;
+  onSubmit?: (values: ContentRegistrationValues) => Promise<void>;
 }
 
 interface ContentRegistrationTriggerProps {
   className?: string;
   children: React.ReactNode;
-  onSubmit?: (values: ContentRegistrationValues) => void;
+  onSubmit?: (values: ContentRegistrationValues) => Promise<void>;
 }
 
 const emptyValues: ContentRegistrationValues = {
@@ -88,6 +89,7 @@ export default function ContentRegistrationModal({
 }: ContentRegistrationModalProps) {
   const titleId = useId();
   const [mounted, setMounted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [values, setValues] = useState<ContentRegistrationValues>(emptyValues);
 
   useEffect(() => {
@@ -117,11 +119,24 @@ export default function ContentRegistrationModal({
 
   if (!mounted || !open) return null;
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
-    onSubmit?.(values);
-    onClose();
+
+    if(submitting) return;
+    setSubmitting(true);
+
+    try {
+      await onSubmit?.(values);
+      onClose();
+    } catch (error) {
+      console.error("콘텐츠 등록실패:",error);
+    } finally {
+      setSubmitting(false);
+    }
   }
+
 
   return createPortal(
     <div
@@ -288,8 +303,9 @@ export default function ContentRegistrationModal({
           <button
             type="submit"
             className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center rounded-full bg-[#4f46e5] text-sm font-semibold text-white"
+            disabled={submitting}
           >
-            콘텐츠 등록하기
+            {submitting ? "등록 중..." : "콘텐츠 등록하기"}
           </button>
         </div>
       </form>
