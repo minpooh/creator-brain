@@ -5,9 +5,15 @@ import { createClient } from "@/lib/supabase/server";
 
 const MIN_CONTENT_COUNT = 5;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function createOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+
+  if (!apiKey) {
+    return null;
+  }
+
+  return new OpenAI({ apiKey });
+}
 
 export async function POST() {
   try {
@@ -92,6 +98,17 @@ export async function POST() {
     // --------------------------------------------------
     // 6. OpenAI 분석 요청
     // --------------------------------------------------
+    const openai = createOpenAIClient();
+
+    if (!openai) {
+      console.error("OPENAI_API_KEY is not set");
+
+      return NextResponse.json(
+        { error: "분석을 실행하지 못했습니다." },
+        { status: 500 },
+      );
+    }
+
     const response = await openai.responses.create({
       model: "gpt-6-luna",
 
