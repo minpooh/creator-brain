@@ -1,6 +1,7 @@
+import Link from "next/link";
 import AnalysisReportPreview from "@/components/dashboard/AnalysisReportPreview";
 import ContentCard from "@/components/dashboard/ContentCard";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import Header from "@/components/common/Header";
 import { getContentThumbnailUrl } from "@/lib/dashboard/thumbnail";
 import { createClient } from "@/lib/supabase/server";
 
@@ -212,7 +213,7 @@ export default async function DashboardAnalyzed() {
 
     return (
       <div className="min-h-screen bg-surface">
-        <DashboardHeader />
+        <Header />
         <div className="mx-auto flex w-full max-w-[1440px] px-4 py-10 md:px-10 lg:px-[120px]">
           <p className="text-sm text-text-secondary">
             분석 결과를 불러오지 못했습니다.
@@ -267,7 +268,7 @@ export default async function DashboardAnalyzed() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <DashboardHeader />
+      <Header />
       <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-4 py-6 md:gap-10 md:px-10 md:py-10 lg:gap-10 lg:px-[120px] lg:py-[60px]">
         <section className="flex flex-col gap-2">
           <h1 className="text-xl font-bold text-text-primary md:text-2xl lg:text-[28px]">
@@ -438,12 +439,12 @@ export default async function DashboardAnalyzed() {
                   </span>
                 </p>
               </div>
-              <a
-                href="#"
+              <Link
+                href="/contents"
                 className="hidden shrink-0 text-sm font-semibold text-primary underline md:inline"
               >
                 전체 콘텐츠 보기
-              </a>
+              </Link>
             </div>
             <div className="-mx-4 flex gap-3 overflow-x-auto px-4 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0">
               {recentContents.map((content) => (
@@ -458,12 +459,12 @@ export default async function DashboardAnalyzed() {
                 />
               ))}
             </div>
-            <a
-              href="#"
+            <Link
+              href="/contents"
               className="py-3 text-center text-sm font-semibold text-primary md:hidden"
             >
               전체 콘텐츠 보기
-            </a>
+            </Link>
           </section>
         ) : null}
       </div>
