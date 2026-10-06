@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import AnalysisProcess from "@/components/dashboard/AnalysisProcess";
 
@@ -8,6 +11,7 @@ const reportModels = [
   { number: "4", title: "Content Pillar", description: "AI 정밀 분석 준비" },
   { number: "5", title: "Content Direction", description: "AI 정밀 분석 준비" },
 ];
+
 
 function StarsIcon() {
   return (
@@ -36,6 +40,38 @@ function ReadyIllustration() {
 }
 
 export default function DashboardReady() {
+  const [analyzing, setAnalyzing] = useState(false);
+
+  async function handleAnalysis() {
+    if (analyzing) return;
+
+    setAnalyzing(true);
+
+    try {
+      const response = await fetch("/api/analysis", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error ?? "AI 분석에 실패했습니다.");
+      }
+
+      window.location.reload();
+    } catch (error) {
+      console.error("AI 분석 실패:", error);
+      setAnalyzing(false);
+
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("AI 분석 중 오류가 발생했습니다.");
+      }
+    }
+  }
+
+
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-4 py-6 md:gap-8 md:px-10 md:py-12 lg:gap-10 lg:px-20 lg:py-[60px]">
         <section className="flex flex-col gap-1.5 md:gap-2">
@@ -133,9 +169,10 @@ export default function DashboardReady() {
               <button
                 type="button"
                 className="inline-flex h-14 cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white lg:h-24 lg:px-10 lg:text-lg"
-              >
+                onClick={handleAnalysis}
+                disabled={analyzing}>
                 <StarsIcon />
-                AI 분석 시작하기
+                {analyzing ? "AI 분석 중..." : "AI 분석 시작하기"}
               </button>
               <button
                 type="button"
